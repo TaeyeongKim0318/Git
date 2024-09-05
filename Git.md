@@ -3,13 +3,11 @@
 #### Git 이란
 소스코드를 효과적으로 관리할 수 있게 해주는 무료 소프트웨어로 **버전 관리 시스템**의 일종이다.
 
-#### Git의 기능
-- Backup  
-  만약의 사태에 대비할 수 있다.
-- Recovery  
-  이전 상태로 돌아갈 수 있다.
-- Collaboration  
-  다른 사람과 협업이 가능하다.
+#### Git과 Github에 대해
+Git은 로컬 디렉토리에 있는 파일들의 버전을 관리하기 위한 툴이고 Github는 웹에서 파일들의 버전을 관리하고 저장한다고 생각하면 된다.  
+Github에서 파일들을 저장하는 공간을 **Repository** 혹은 **원격 저장소**라고 한다.  
+
+
 
 #### Git  자료
 생활 코딩의 [지옥에서 온 Git](https://www.youtube.com/watch?v=hFJZwOfme6w&list=PLuHgQVnccGMA8iwZwrGyNXCGy2LAAsTXk)을 통해 학습  
@@ -17,9 +15,23 @@
 
 ## Git 기본 명령어
 ### git init  
-관리할 폴더를 지정한다. 지정 시 '.git'이라는 폴더 생성되는데 삭제하면 안된다.  
+initialize(초기화)의 약자로, Git을 위한 초기 설정을 한다. 이때 **.git** 폴더가 생성되는데 ***절대*** 삭제하면 안된다.  
 ```bash
 git init
+```
+
+### git remote
+Github repository와 연결한다.  
+```bash
+git remote add <저장소 명> <repository URL>
+```
+연결된 repository 목록을 확인한다.
+```bash
+git remote -v
+```
+연결된 repository를 삭제한다.
+```bash
+git remote remove <저장소 명>
 ```
 
 ### git config
@@ -36,17 +48,34 @@ git config --global user.email <이메일>
 ```bash
 git status
 ```
-**워킹 디렉토리의 파일은 먼저 크게 Untracked, Tracked의 두 가지 상태로 나뉜다..**(워킹 디렉토리는 작업중인 로컬 컴퓨터의 공간이다.) 파일에 수정이 일어나면 git이 파일의 변경을 감지하여 사용자에게 알려주는 것과 같이 **파일을 추적하는 상태를 Tracked 상태라고 한다.** 반대로, 파일을 저장소에 저장할 필요가 없어 **git이 신경쓰지 않아도 되는 상태를 Untracked 상태라고 한다.**
+#### 파일의 상태에 대해
+워킹 디렉토리(작업 중인 로컬 디렉토리)의 파일은 **Untracked, Tracked** 두 가지 상태로 나뉜다.
 
-파일을 새로 만들 경우 Untracked 상태 즉, git이 파일을 추적하지 않는 상태가 된다. git 저장소에 저장할 필요가 없는 파일들은 Untracked 상태로 두면 된다. 이후 `git add` 명령어를 이용하여 파일을 add해주면, 해당 파일은 staging area에 저장되어 Tracked 상태 즉, git이 파일을 추적하는 상태가 된다.
+**Untracked** :  파일을 추적하지 않는 상태, 파일을 수정 해도 Git에서 기록하지 않는다.
+**Tracked** :  파일을 추적하지 않는 상태, 파일을 수정하면 Git이 기록한다.
 
-**Tracked 상태의 파일들은 다시 크게 Unmodified, Modified, Staged 3개의 상태로 나뉜다.** **staging area에 있는 파일들의 상태는 Staged이다.** staging area에 있는 파일들을 commit하게 되면 해당 파일들은 하나의 **커밋으로 저장된 후, 파일의 상태는 Unmodified로 내려오게 된다.** **Unmodified 상태의 파일들을 수정하게 되면 Modified 상태가 된다.** 이후 다시 `git add` 명령어를 이용하여 Staged 상태로 올려준 후 commit을 하는 과정을 반복하게 된다.  
+Git에서 파일 수정에 관해 기록하는 영역을 **Staging Area** 혹은 **스테이징 영역**이라고 한다.  
+
+파일을 **Staging Area**에 추가, **Tracked** 상태로 변경하고 싶으면 `git add` 명령어를 사용하면 된다.  
+파일을 **Staging Area**에서 제거, **UnTracked** 상태로 변경하고 싶으면 `git restore` 명령어를 사용하면 된다.
+
+**Tracked** 상태는 크게 3가지 상태로 나뉜다.  
+**Unmodified** : 파일이 수정되지 않은 상태이다.
+**Modified** : 파일이 수정된 상태이다.
+**Staged** : 파일이 **Staging Area**에 있는 상태이다.  
+
 <img src=https://git-scm.com/book/en/v2/images/lifecycle.png>
 
 ### git add
 워킹 디렉토리의 파일을 스테이징 영역에 추가한다.
 ```bash
 git add <파일명>
+```
+
+### git restore
+스테이징 영역에 있는 파일을 제거한다.
+```bash
+git restore --staged <파일명>
 ```
 
 ### git commit
@@ -87,7 +116,7 @@ git diff <커밋ID 1>..<커밋ID 2>
 ### git reset
 버전 id로 돌아간다.
 ```bash
-git reset --hard <버전 id">
+git reset --hard <버전 id>
 ```
 cf) 원격 저장소가 아닌 본인 PC 버전에 대해서만 reset을 진행해야한다.
 
@@ -100,7 +129,7 @@ git revert <버전 id>
 ### git push
 원격 저장소에 commit 내용 저장한다.
 ```bash
-git push <remote> <branch>
+git push <저장소 명> <branch 명>
 ```
 `git push origin main`을 많이 사용한다.
 
@@ -114,7 +143,7 @@ git pull
 원격 저장소의 내용을 복제한다.
 init 파일도 복제된다.
 ```bash
-git clone <깃허브 레파지토리 URL>
+git clone <repository URL>
 ```
 
 
