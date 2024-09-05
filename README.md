@@ -2,9 +2,11 @@
 git과 MarkDown 사용방법을 정리한 문서입니다.
 ## [git 문서 보기](./Git.md)
 - [git init](./Git.md#git-init)
+- [git remote](./Git.md#git-remote)
 - [git config](./Git.md#git-config)
 - [git status](./Git.md#git-status)
 - [git add](./Git.md#git-add)
+- [git restore](./Git.md#git-restore)
 - [git commit](./Git.md#git-commit)
 - [git log](./Git.md#git-log)
 - [git diff](./Git.md#git-diff)
